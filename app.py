@@ -31,7 +31,7 @@ except Exception as e:
     st.error(f"⚠️ No fue posible cargar los datos de la API: {e}")
     st.stop()
 
-hasta = pd.Timestamp.utcnow().tz_localize("UTC")
+hasta = pd.Timestamp.now(tz="UTC")
 desde = hasta - pd.Timedelta(days=int(dias))
 
 dff = filter_sismos(df, mag_min=mag_sel, fecha_desde=desde, fecha_hasta=hasta, region_keyword=region_kw)
