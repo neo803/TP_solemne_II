@@ -36,6 +36,9 @@ desde = hasta - pd.Timedelta(days=int(dias))
 
 dff = filter_sismos(df, mag_min=mag_sel, fecha_desde=desde, fecha_hasta=hasta, region_keyword=region_kw)
 
+# Conjunto específico para el mapa (solo con coordenadas válidas)
+valid_map = dff.dropna(subset=['latitud','longitud'])
+
 c1, c2, c3, c4 = st.columns(4)
 c1.metric("Eventos", len(dff))
 if not dff.empty:
@@ -48,7 +51,8 @@ else:
     c4.metric("Máx. magnitud", "—")
 
 st.subheader("🗺️ Mapa interactivo")
-if dff.empty:
+valid_map = dff.dropna(subset=['latitud','longitud'])
+    if dff.empty:
     st.info("Sin resultados para los filtros aplicados.")
 else:
     center = [dff['latitud'].mean(), dff['longitud'].mean()]
