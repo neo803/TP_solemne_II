@@ -51,11 +51,12 @@ else:
     c4.metric("Máx. magnitud", "—")
 
 st.subheader("🗺️ Mapa interactivo")
-valid_map = dff.dropna(subset=['latitud','longitud'])
-    if dff.empty:
+if dff.empty:
     st.info("Sin resultados para los filtros aplicados.")
+elif valid_map.empty:
+    st.info("Hay datos, pero ninguno trae coordenadas para el mapa. Revisa la tabla y los filtros.")
 else:
-    center = [dff['latitud'].mean(), dff['longitud'].mean()]
+    center = [valid_map['latitud'].mean(), valid_map['longitud'].mean()]
     if not (np.isfinite(center[0]) and np.isfinite(center[1])):
         center = [-33.45, -70.66]
     m = folium.Map(location=center, zoom_start=4, tiles="OpenStreetMap")
@@ -92,7 +93,6 @@ else:
         ).add_child(folium.Popup(popup_html, max_width=350)).add_to(m)
 
     st_folium(m, height=520, use_container_width=True)
-
 st.subheader("📈 Tendencias")
 if not dff.empty:
     daily = dff.groupby('dia').agg(
