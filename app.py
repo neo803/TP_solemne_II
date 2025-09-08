@@ -72,7 +72,7 @@ else:
             if mval < 5: return "#FF9800"
             return "#E53935"
 
-    for _, r in dff.iterrows():
+    for _, r in valid_map.iterrows():
         popup_html = (
             f"<b>Mag:</b> {r.get('magnitud')} • <b>Prof:</b> {r.get('profundidad')} km<br>"
             f"<b>Fecha:</b> {r.get('fecha_local')}<br>"
