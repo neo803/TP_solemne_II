@@ -19,6 +19,7 @@ with st.sidebar:
     region_kw = st.text_input("Buscar por referencia (región/ciudad)", value="")
     radius = st.slider("Tamaño de marcador (px)", min_value=3, max_value=20, value=8)
     color_mode = st.radio("Color por", options=["profundidad","magnitud"], index=0)
+    mostrar_mapa = st.checkbox("Mostrar mapa", value=True)
 
 @st.cache_data(ttl=300, show_spinner=True)
 def load_data():
@@ -51,7 +52,10 @@ else:
     c4.metric("Máx. magnitud", "—")
 
 st.subheader("🗺️ Mapa interactivo")
-if dff.empty:
+if not mostrar_mapa:
+    st.info("Mapa oculto por el usuario.")
+else:
+    if dff.empty:
     st.info("Sin resultados para los filtros aplicados.")
 elif valid_map.empty:
     st.info("Hay datos, pero ninguno trae coordenadas para el mapa. Revisa la tabla y los filtros.")
